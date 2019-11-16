@@ -1,0 +1,42 @@
+package com.study.jsp.command;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.study.jsp.DAO.*;
+import com.study.jsp.DTO.*;
+
+public class CommentUpdateAction implements BCommand{
+
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) {
+		int comment_num = Integer.parseInt(request.getParameter("comment_num"));
+        String comment_content = request.getParameter("comment_content");
+        
+        CommentDAO dao = CommentDAO.getInstance();
+        
+        CommentDto comment = new CommentDto();
+        comment.setComment_num(comment_num);
+        comment.setComment_content(comment_content);
+        
+        boolean result = dao.updateComment(comment);
+        try {
+        	response.setContentType("text/html;charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            
+            // 정상적으로 댓글을 수정했을경우 1을 전달한다.
+            if(result) out.println("1");
+            
+            out.close();     
+        } catch(Exception e) {
+        	
+        }
+         
+     
+
+	}	
+}
